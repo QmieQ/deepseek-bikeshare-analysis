@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>两座城市的骑行时钟｜首尔 · 泽西市共享单车数据专题</title>
+<style>
+  :root{
+    --bg:#FAF8F4;--card:#FFFFFF;--ink:#1B1917;--sub:#57514A;--faint:#8E867B;--rule:#E6DFD3;
+    --s:#2A5B57;--s2:#7FA8A3;--j:#B0603C;--j2:#DCBBA6;--wash:#F3EEE4;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,-apple-system,sans-serif;
+    font-size:16px;line-height:1.75}
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px}
+  a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(42,91,87,.3)}
+  a:hover{border-bottom-color:var(--s)}
+
+  .hero{padding:56px 0 0}
+  .eyebrow{font-size:11.5px;letter-spacing:.16em;color:var(--faint);margin:0 0 22px;text-transform:uppercase}
+  h1{font-size:clamp(31px,5.4vw,54px);line-height:1.16;margin:0 0 22px;font-weight:800;letter-spacing:-.02em}
+  h1 .a{color:var(--s)} h1 .b{color:var(--j)}
+  .standfirst{font-size:clamp(15.5px,1.9vw,18.5px);line-height:1.85;color:#332F29;max-width:36em;margin:0 0 30px}
+  .standfirst mark{background:rgba(220,187,166,.45);color:inherit;padding:0 2px}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);margin:0}
+  .kpi{padding:18px 14px 16px;border-right:1px solid var(--rule)}
+  .kpi:last-child{border-right:none}
+  .kpi .v{font-size:clamp(19px,2.9vw,26px);font-weight:800;line-height:1.15;letter-spacing:-.02em}
+  .kpi .k{font-size:11.5px;color:var(--sub);margin-top:7px;line-height:1.5}
+  .kpi.s .v{color:var(--s)} .kpi.j .v{color:var(--j)}
+
+  section{padding:56px 0 0}
+  .head{display:flex;gap:14px;align-items:flex-start;border-top:1px solid var(--ink);padding-top:14px;margin-bottom:12px}
+  .head .no{font-size:11px;letter-spacing:.14em;color:var(--faint);font-weight:600;padding-top:8px;min-width:26px}
+  .head h2{font-size:clamp(21px,3.1vw,29px);line-height:1.3;margin:0;font-weight:800;letter-spacing:-.01em}
+  .head h2 small{display:block;font-size:13px;font-weight:500;color:var(--faint);margin-top:7px;letter-spacing:.01em}
+  p{margin:0 0 13px;max-width:40em}
+  .lede-p{font-size:16.5px;color:#332F29;max-width:38em}
+  h3.sub{font-size:17px;font-weight:700;margin:30px 0 9px}
+  h3.sub em{font-style:normal;font-size:10.5px;letter-spacing:.1em;color:#fff;background:var(--s);padding:2px 6px;margin-right:8px;border-radius:2px;vertical-align:2px}
+  h3.sub.j em{background:var(--j)}
+
+  figure{margin:26px 0 0}
+  .figbox{border:1px solid var(--rule);background:var(--card);padding:16px 16px 12px}
+  .fighead{margin:0 0 10px}
+  .fighead .t{display:block;font-size:14.5px;font-weight:700;line-height:1.45}
+  .fighead .u{display:block;font-size:11px;color:var(--faint);margin-top:2px}
+  .chart{width:100%}
+  .chart svg{display:block;width:100%;max-width:540px;margin:0 auto;height:auto}
+  figcaption{font-size:13px;color:var(--sub);line-height:1.7;margin-top:10px}
+  figcaption b{color:var(--ink);font-weight:700}
+  .readout{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);border-top:none;background:var(--wash);margin:0 -1px -1px}
+  .readout div{padding:11px 13px;border-right:1px solid var(--rule);font-size:12.5px;line-height:1.55;color:#332F29}
+  .readout div:last-child{border-right:none}
+  .readout b{display:block;font-size:16.5px;font-weight:800;margin-bottom:1px;letter-spacing:-.01em}
+
+  .quote{margin:30px 0;padding-left:18px;border-left:3px solid var(--s);font-size:clamp(18px,2.4vw,22px);line-height:1.6;font-weight:700;max-width:28em}
+  .quote.j{border-left-color:var(--j)}
+  .quote span{font-weight:500;font-size:14px;color:var(--sub);display:block;margin-top:8px}
+
+  .note{background:var(--wash);padding:14px 16px;font-size:13.5px;line-height:1.75;color:#3B3630;margin:22px 0}
+  .note.warn{background:#F6E7DC;border-left:3px solid var(--j)}
+  .note b{font-weight:700}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:4px 0 0}
+  th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+  th{font-size:11.5px;letter-spacing:.06em;color:var(--faint);font-weight:600;border-bottom:1px solid var(--ink)}
+  .tw{overflow-x:auto}
+  .tw table{min-width:520px}
+
+  .rec{border-top:1px solid var(--rule);padding:22px 0 4px;display:grid;grid-template-columns:130px 1fr;gap:6px 22px}
+  .rec:first-of-type{border-top:1px solid var(--ink)}
+  .rec .side{font-size:11.5px;letter-spacing:.1em;color:var(--faint);font-weight:600}
+  .rec .side .p{display:inline-block;padding:2px 7px;margin-bottom:8px;color:#fff;font-size:10.5px;letter-spacing:.1em;border-radius:2px}
+  .rec .p0{background:var(--ink)} .rec .p1{background:var(--s)} .rec .p2{background:#8B8176}
+  .rec h3{margin:0 0 7px;font-size:18.5px;font-weight:800;line-height:1.42}
+  .rec .body{font-size:14px;line-height:1.75;color:#332F29}
+  .rec dl{margin:0;display:grid;grid-template-columns:68px 1fr;gap:5px 12px}
+  .rec dt{color:var(--faint);font-size:12px;padding-top:2px}
+  .rec dd{margin:0}
+  .rec ol{margin:0;padding-left:17px}
+  .rec li{margin-bottom:2px}
+
+  footer{margin-top:66px;border-top:1px solid var(--ink);padding:24px 0 64px;font-size:12.5px;color:var(--sub);line-height:1.8}
+  footer h4{font-size:12px;letter-spacing:.1em;color:var(--ink);margin:0 0 7px;font-weight:700}
+  footer ul{padding-left:17px;margin:0 0 18px}
+
+  @media(max-width:720px){
+    .hero{padding:34px 0 0} section{padding:44px 0 0}
+    .kpis{grid-template-columns:1fr 1fr}
+    .kpi{border-bottom:1px solid var(--rule)}
+    .kpi:nth-child(2n){border-right:none}
+    .readout{grid-template-columns:1fr}
+    .readout div{border-right:none;border-bottom:1px solid var(--rule)}
+    .rec{grid-template-columns:1fr;gap:5px}
+    .figbox{padding:13px 12px 10px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap hero">
+  <p class="eyebrow">数据专题 · 首尔 / 泽西市 · 共享单车运营复盘</p>
+  <h1>两座城市的<span class="a">骑行时钟</span>，<br>走得<span class="b">并不一样</span></h1>
+  <p class="standfirst">首尔用一年 <mark>8,760 小时</mark>证明需求跟着季节换档：春季气温弹性 +0.537，到夏季只剩 +0.217。泽西市用一个月 <mark>19,676 次骑行</mark>给出另一种答案：97.9% 来自会员，前 12 站里只有 <mark>1.5%</mark> 骑回原站，整张网指向同一个靶心。<strong>两套数据不合并、不换算。</strong></p>
+
+  <div class="kpis">
+    <div class="kpi s"><div class="v">+0.537</div><div class="k">春季气温弹性最高<br>夏季仅 +0.217</div></div>
+    <div class="kpi s"><div class="v">247 小时</div><div class="k">秋季整日停运<br>9 月估算应为 1,076</div></div>
+    <div class="kpi j"><div class="v">1.5%</div><div class="k">前 12 站同站还车率<br>位移网络，不是绕圈</div></div>
+    <div class="kpi j"><div class="v">+325 次</div><div class="k">格罗夫街 PATH 净流入<br>车辆只进不出</div></div>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="head"><span class="no">01</span><h2>九条结论<small>标注“估算”的数字不当作实测</small></h2></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:24%">结论</th><th>证据</th></tr></thead>
+      <tbody>
+        <tr><td><strong>首尔气温弹性分四季</strong></td><td>春 +0.537、冬 +0.418、秋 +0.272、夏 +0.217；全年 +0.565 高于任何单季，是季节差异被混入的结果。</td></tr>
+        <tr><td><strong>四季是四种形状</strong></td><td>18 时峰值：春 1,653、夏 2,135、秋 1,765、冬 438；冬季早晚峰几乎等高（422/438），夏季晚峰是早峰 1.5 倍。</td></tr>
+        <tr><td><strong>节假日是相位后移</strong></td><td>8 时 1,050→348（−67%），15–17 时反超平日，0–1 时 466/393 更高。</td></tr>
+        <tr><td><strong>降雨是剂量型</strong></td><td>干燥 739；0.01–4.99mm 178（−76%）；5–19.99mm 64（−91%）。</td></tr>
+        <tr><td><strong>停运整日发生且集中秋季</strong></td><td>295 小时：4 月 24、5 月 24、9 月 96、10 月 79、11 月 72；冬季与 6–8 月为 0；每小时均匀 12–13 次。</td></tr>
+        <tr><td><strong>泽西市均值不可用</strong></td><td>中位 295 秒，均值 446.9 被长尾拉高 51.5%；P99=2,254 秒，最大 187,392 秒。</td></tr>
+        <tr><td><strong>泽西市是两条时钟</strong></td><td>会员 8 时占自身 13.5%；普通用户 12–14 时占 33.3%，8 时仅 6.8%。</td></tr>
+        <tr><td><strong>泽西市是星形网</strong></td><td>前 12 站同站还车率 1.5%；不伦瑞克街 60.1%、不伦瑞克街×第六街 50.6% 的终点都是格罗夫街 PATH。</td></tr>
+        <tr><td><strong>时长由场景决定</strong></td><td>交通/商业站中位 254–307 秒，公园/医院/图书馆 448–475 秒，差 1.9 倍，远大于性别（8%）与年龄（13%）。</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">02</span><h2>首尔：一年逐小时<small>8,760 行 × 14 字段 · 无缺失无重复 · 均值 704.6 / 中位 504.5</small></h2></div>
+  <p class="lede-p">口径先立清楚：“是否正常运营”为“否”的 295 小时租赁量为 0，是停运不是无人骑车；剔除后均值 729.2。两种口径分列，估算值单独标注。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 1｜6 月一座孤峰，9 月被停运压住</span><span class="u">次／小时（月内均值）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 220" role="img" aria-label="首尔逐月均值柱状图">
+          <g stroke="#EFE9DE">
+            <line x1="44" y1="147.2" x2="348" y2="147.2"/>
+            <line x1="44" y1="108.5" x2="348" y2="108.5"/>
+            <line x1="44" y1="69.7" x2="348" y2="69.7"/>
+            <line x1="44" y1="31.0" x2="348" y2="31.0"/>
+          </g>
+          <line x1="44" y1="186" x2="348" y2="186" stroke="#1B1917"/>
+          <g font-size="8.5" fill="#8E867B" text-anchor="end">
+            <text x="40" y="189">0</text><text x="40" y="150">300</text>
+            <text x="40" y="111">600</text><text x="40" y="72">900</text><text x="40" y="33">1200</text>
+          </g>
+          <rect x="48.6" y="153.8" width="16" height="32.2" fill="#7FA8A3"/>
+          <rect x="73.9" y="159.9" width="16" height="26.1" fill="#7FA8A3"/>
+          <rect x="99.2" y="156.8" width="16" height="29.2" fill="#7FA8A3"/>
+          <rect x="124.5" y="119.8" width="16" height="66.2" fill="#7FA8A3"/>
+          <rect x="149.8" y="91.9" width="16" height="94.1" fill="#7FA8A3"/>
+          <rect x="175.1" y="63.2" width="16" height="122.8" fill="#7FA8A3"/>
+          <rect x="200.4" y="25.0" width="16" height="161.0" fill="#2A5B57"/>
+          <rect x="225.7" y="58.4" width="16" height="127.6" fill="#7FA8A3"/>
+          <rect x="251.0" y="72.8" width="16" height="113.2" fill="#7FA8A3"/>
+          <rect x="276.3" y="65.0" width="16" height="121.0" fill="#DCBBA6"/>
+          <rect x="301.6" y="72.9" width="16" height="113.1" fill="#7FA8A3"/>
+          <rect x="326.9" y="102.4" width="16" height="83.6" fill="#7FA8A3"/>
+          <text x="208.4" y="20" font-size="9" font-weight="700" fill="#2A5B57" text-anchor="middle">1,246</text>
+          <text x="284.3" y="60" font-size="8.5" font-weight="700" fill="#B0603C" text-anchor="middle">936*</text>
+          <text x="81.9" y="152" font-size="8.5" fill="#57514A" text-anchor="middle">249</text>
+          <text x="107.2" y="153" font-size="8.5" fill="#57514A" text-anchor="middle">202</text>
+          <g font-size="8.5" fill="#57514A" text-anchor="middle">
+            <text x="56.6" y="199">12</text><text x="81.9" y="199">1</text><text x="107.2" y="199">2</text>
+            <text x="132.5" y="199">3</text><text x="157.8" y="199">4</text><text x="183.1" y="199">5</text>
+            <text x="208.4" y="199" font-weight="700" fill="#2A5B57">6</text>
+            <text x="233.7" y="199">7</text><text x="259" y="199">8</text>
+            <text x="284.3" y="199" font-weight="700" fill="#B0603C">9</text>
+            <text x="309.6" y="199">10</text><text x="334.9" y="199">11</text>
+            <text x="56.6" y="210" font-size="7.5" fill="#8E867B">月</text>
+          </g>
+          <text x="44" y="216" font-size="7.5" fill="#8E867B">* 含 96 小时整日停运，按同分布估算应约 1,076</text>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>+517%</b>3 月到 6 月的抬升幅度</div>
+        <div><b>1,076*</b>9 月剔除停运后的估算值</div>
+        <div><b>22%</b>冬季均值仅为夏季的比例</div>
+      </div>
+      <figcaption><b>读法：</b>6 月是孤峰，7–8 月反低。原因不是“太热”——20–30℃ 与 ≥30℃ 均值几乎相同（1,118 对 1,112），真正压下来的是梅雨季降雨（见图 6）。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 2｜天气是开关，节假日是削弱</span><span class="u">次／小时（各组均值）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 200" role="img" aria-label="首尔条件下均值对比">
+          <line x1="58" y1="18" x2="58" y2="172" stroke="#E6DFD3"/>
+          <g font-size="9" fill="#1B1917" text-anchor="end">
+            <text x="54" y="32">无降雨</text><text x="54" y="58">降雨中</text><text x="54" y="84">降雪中</text>
+            <text x="54" y="110">非节假日</text><text x="54" y="136">节假日</text><text x="54" y="162">正常运营</text>
+          </g>
+          <rect x="62" y="22" width="280.1" height="13" fill="#2A5B57"/>
+          <rect x="62" y="48" width="62.2" height="13" fill="#B0603C"/>
+          <rect x="62" y="74" width="70.1" height="13" fill="#B0603C"/>
+          <rect x="62" y="100" width="271.0" height="13" fill="#7FA8A3"/>
+          <rect x="62" y="126" width="189.5" height="13" fill="#2A5B57"/>
+          <rect x="62" y="152" width="276.3" height="13" fill="#7FA8A3"/>
+          <g font-size="9" font-weight="700">
+            <text x="346" y="32" fill="#2A5B57" text-anchor="end">739</text>
+            <text x="128" y="58" fill="#B0603C">164</text>
+            <text x="136" y="84" fill="#B0603C">185</text>
+            <text x="337" y="110" fill="#2A5B57" text-anchor="end">715</text>
+            <text x="256" y="136" fill="#2A5B57">500</text>
+            <text x="342" y="162" fill="#2A5B57" text-anchor="end">729</text>
+          </g>
+          <text x="58" y="190" font-size="7.5" fill="#8E867B">雨 528h · 雪 443h · 节假日 432h · 停运 295h</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>雨雪把均值压到 200 以下（−74%~−78%），节假日只削 30%。这张图掩盖两件事：降雨是剂量型（图 6），节假日是相位后移（图 5）。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 3｜温度分箱：20–30℃ 见顶</span><span class="u">次／小时；箱下为样本小时数</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 200" role="img" aria-label="首尔气温分箱">
+          <g stroke="#EFE9DE">
+            <line x1="40" y1="132" x2="350" y2="132"/><line x1="40" y1="88" x2="350" y2="88"/><line x1="40" y1="44" x2="350" y2="44"/>
+          </g>
+          <line x1="40" y1="176" x2="350" y2="176" stroke="#1B1917"/>
+          <g font-size="8.5" fill="#8E867B" text-anchor="end">
+            <text x="36" y="179">0</text><text x="36" y="135">400</text><text x="36" y="91">800</text><text x="36" y="47">1200</text>
+          </g>
+          <rect x="52" y="148.9" width="34" height="27.1" fill="#7FA8A3"/>
+          <rect x="112" y="118.6" width="34" height="57.4" fill="#7FA8A3"/>
+          <rect x="172" y="72.4" width="34" height="103.6" fill="#7FA8A3"/>
+          <rect x="232" y="23.7" width="34" height="152.3" fill="#2A5B57"/>
+          <rect x="292" y="24.5" width="34" height="151.5" fill="#2A5B57"/>
+          <g font-size="8.5" font-weight="700" text-anchor="middle">
+            <text x="69" y="145" fill="#57514A">198</text>
+            <text x="129" y="114.6" fill="#57514A">422</text>
+            <text x="189" y="68.4" fill="#57514A">760</text>
+            <text x="249" y="19.7" fill="#2A5B57">1,118</text>
+            <text x="309" y="20.5" fill="#2A5B57">1,112</text>
+          </g>
+          <g font-size="8.5" fill="#57514A" text-anchor="middle">
+            <text x="69" y="188">&lt;0℃</text><text x="129" y="188">0–10</text><text x="189" y="188">10–20</text>
+            <text x="249" y="188">20–30</text><text x="309" y="188">≥30℃</text>
+          </g>
+          <g font-size="7" fill="#8E867B" text-anchor="middle">
+            <text x="69" y="197">1,433</text><text x="129" y="197">2,142</text><text x="189" y="197">2,257</text>
+            <text x="249" y="197">2,404</text><text x="309" y="197">524</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>20–30℃ 与 ≥30℃ 只差 6 次，高温既不是增益也不是断崖。这是“全样本按温度切”，与“同一季节内看温度”是两种口径（图 8）。</figcaption>
+    </div>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">03</span><h2>首尔深挖：四层交叉<small>季节 × 小时、假日 × 小时、雨量 × 剂量、停运 × 日历</small></h2></div>
+
+  <h3 class="sub"><em>深挖 A</em>四季四条曲线，形状不同</h3>
+  <p>把四季放在同一纵轴（0–2,200 次／小时）上：冬季是干净的通勤双峰（8 时 422、18 时 438），19 时后迅速熄火；夏季晚峰冲到 2,135，并把 19–23 时全部抬到 1,154 以上；春秋介于两者之间，秋季晚峰（1,765）比春季（1,653）更陡、夜间更亮。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 4｜四季小时曲线：同一纵轴下的四种形状</span><span class="u">次／小时（季内均值）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 240" role="img" aria-label="首尔四季小时曲线">
+          <g stroke="#EFE9DE">
+            <line x1="44" y1="144" x2="348" y2="144"/>
+            <line x1="44" y1="102" x2="348" y2="102"/>
+            <line x1="44" y1="60" x2="348" y2="60"/>
+            <line x1="44" y1="18" x2="348" y2="18"/>
+          </g>
+          <line x1="44" y1="186" x2="348" y2="186" stroke="#1B1917"/>
+          <g font-size="8" fill="#8E867B" text-anchor="end">
+            <text x="40" y="189">0</text><text x="40" y="147">550</text><text x="40" y="105">1100</text>
+            <text x="40" y="63">1650</text><text x="40" y="21">2200</text>
+          </g>
+
+          <polyline fill="none" stroke="#B0603C" stroke-width="1.4" stroke-linejoin="round" opacity=".9"
+            points="44,173.4 57.2,173.9 70.4,177.0 83.6,180.1 96.8,182.1 110,182.1 123.2,178.9 136.4,170.0 149.6,153.8 162.8,166.6 176,171.8 189.2,168.6 202.4,165.9 215.6,165.0 228.8,164.3 242,163.2 255.2,162.4 268.4,159.8 281.6,152.5 294.8,162.8 308,167.4 321.2,167.6 334.4,168.8 347.6,172.8"/>
+          <polyline fill="none" stroke="#7FA8A3" stroke-width="1.6" stroke-linejoin="round"
+            points="44,150.1 57.2,158.8 70.4,167.1 83.6,173.4 96.8,177.9 110,177.3 123.2,166.8 136.4,140.0 149.6,108.6 162.8,135.9 176,143.3 189.2,135.1 202.4,123.5 215.6,119.8 228.8,116.8 242,112.0 255.2,103.7 268.4,88.3 281.6,59.8 294.8,92.8 308,106.8 321.2,109.7 334.4,118.9 347.6,139.5"/>
+          <polyline fill="none" stroke="#2A5B57" stroke-width="1.8" stroke-linejoin="round"
+            points="44,138.4 57.2,148.9 70.4,160.7 83.6,168.8 96.8,174.6 110,175.0 123.2,161.9 136.4,132.4 149.6,94.6 162.8,128.3 176,137.4 189.2,131.4 202.4,122.5 215.6,117.8 228.8,114.0 242,107.4 255.2,98.1 268.4,79.8 281.6,51.2 294.8,83.0 308,96.1 321.2,100.8 334.4,109.2 347.6,129.7"/>
+          <polyline fill="none" stroke="#1F4542" stroke-width="2" stroke-linejoin="round"
+            points="44,117.3 57.2,132.6 70.4,147.4 83.6,159.8 96.8,168.9 110,167.2 123.2,148.9 136.4,117.0 149.6,77.7 162.8,116.4 176,130.8 189.2,125.9 202.4,119.1 215.6,118.0 228.8,117.7 242,108.9 255.2,96.3 268.4,69.4 281.6,22.9 294.8,41.7 308,48.4 321.2,52.0 334.4,66.3 347.6,97.9"/>
+
+          <circle cx="281.6" cy="22.9" r="2.6" fill="#1F4542"/>
+          <text x="277" y="16" font-size="8" font-weight="700" fill="#1F4542" text-anchor="end">夏 2,135</text>
+          <circle cx="281.6" cy="51.2" r="2.4" fill="#2A5B57"/>
+          <text x="289" y="55" font-size="8" font-weight="700" fill="#2A5B57">秋 1,765</text>
+          <circle cx="281.6" cy="59.8" r="2.4" fill="#7FA8A3"/>
+          <text x="289" y="68" font-size="8" font-weight="700" fill="#4E7C77">春 1,653</text>
+          <circle cx="281.6" cy="152.5" r="2.4" fill="#B0603C"/>
+          <text x="289" y="157" font-size="8" font-weight="700" fill="#B0603C">冬 438</text>
+
+          <g font-size="8" fill="#57514A" text-anchor="middle">
+            <text x="44" y="200">0</text><text x="149.6" y="200">9</text><text x="255.2" y="200">18</text><text x="347.6" y="200">23</text>
+            <text x="196" y="212">时刻（时）</text>
+          </g>
+          <g font-size="8" fill="#57514A">
+            <rect x="44" y="220" width="10" height="3" fill="#1F4542"/><text x="58" y="224">夏</text>
+            <rect x="80" y="220" width="10" height="3" fill="#2A5B57"/><text x="94" y="224">秋</text>
+            <rect x="116" y="220" width="10" height="3" fill="#7FA8A3"/><text x="130" y="224">春</text>
+            <rect x="152" y="220" width="10" height="3" fill="#B0603C"/><text x="166" y="224">冬</text>
+            <text x="190" y="224" fill="#8E867B">样本 2,208 / 2,184 / 2,208 / 2,160 小时</text>
+          </g>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>422 / 438</b>冬季早晚峰几乎等高（1.04 倍）</div>
+        <div><b>1,419 → 2,135</b>夏季早峰到晚峰，放大 1.5 倍</div>
+        <div><b>1,154</b>夏季 23 时仍有量；冬季 19 时已落到 304</div>
+      </div>
+      <figcaption><b>读法：</b>冬夏相差近 5 倍，说明“季节”不是微调而是换档。冬季 19 时后曲线落地，夜间窗口可整块让给维保；夏季夜间需求真实存在，回收与安全投入要压到 20–23 时。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 5｜节假日把曲线往后推，不是整体压扁</span><span class="u">次／小时</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 220" role="img" aria-label="节假日与非节假日小时曲线">
+          <g stroke="#EFE9DE">
+            <line x1="44" y1="142.5" x2="348" y2="142.5"/>
+            <line x1="44" y1="101" x2="348" y2="101"/>
+            <line x1="44" y1="59.5" x2="348" y2="59.5"/>
+            <line x1="44" y1="18" x2="348" y2="18"/>
+          </g>
+          <line x1="44" y1="184" x2="348" y2="184" stroke="#1B1917"/>
+          <g font-size="8" fill="#8E867B" text-anchor="end">
+            <text x="40" y="187">0</text><text x="40" y="145.5">400</text><text x="40" y="104">800</text>
+            <text x="40" y="62.5">1200</text><text x="40" y="21">1600</text>
+          </g>
+          <polyline fill="none" stroke="#7FA8A3" stroke-width="1.6" stroke-linejoin="round"
+            points="44,127.4 57.2,139.6 70.4,152.7 83.6,163.0 96.8,170.2 110,169.3 123.2,153.3 136.4,119.0 149.6,75.0 162.8,115.5 176,128.7 189.2,121.2 202.4,111.0 215.6,107.8 228.8,105.1 242,97.5 255.2,86.7 268.4,64.2 281.6,24.3 294.8,57.5 308,71.2 321.2,75.1 334.4,86.5 347.6,113.2"/>
+          <polyline fill="none" stroke="#2A5B57" stroke-width="1.9" stroke-linejoin="round"
+            points="44,135.6 57.2,143.2 70.4,152.5 83.6,162.0 96.8,170.7 110,174.8 123.2,170.2 136.4,161.8 149.6,147.8 162.8,144.7 176,139.5 189.2,131.1 202.4,119.5 215.6,111.1 228.8,107.8 242,106.4 255.2,102.3 268.4,97.8 281.6,100.9 294.8,109.1 308,109.9 321.2,113.6 334.4,122.1 347.6,137.1"/>
+          <line x1="149.6" y1="75.0" x2="149.6" y2="147.8" stroke="#B0603C" stroke-width=".8" stroke-dasharray="2 2"/>
+          <circle cx="149.6" cy="75.0" r="2.6" fill="#57514A"/>
+          <text x="154" y="70" font-size="8" font-weight="700" fill="#57514A">平日 8 时 1,050</text>
+          <circle cx="149.6" cy="147.8" r="2.6" fill="#2A5B57"/>
+          <text x="154" y="158" font-size="8" font-weight="700" fill="#2A5B57">假日 8 时 348</text>
+          <circle cx="228.8" cy="107.8" r="2.6" fill="#2A5B57"/>
+          <text x="228.8" y="101" font-size="8" font-weight="700" fill="#2A5B57" text-anchor="middle">假日 15 时 748</text>
+          <g font-size="8" fill="#57514A" text-anchor="middle">
+            <text x="44" y="198">0</text><text x="149.6" y="198">9</text><text x="255.2" y="198">18</text><text x="347.6" y="198">23</text>
+          </g>
+          <g font-size="8" fill="#57514A">
+            <rect x="44" y="210" width="10" height="3" fill="#2A5B57"/><text x="58" y="214">节假日 432h</text>
+            <rect x="130" y="210" width="10" height="3" fill="#7FA8A3"/><text x="144" y="214">非节假日 8,328h</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>节假日没有早高峰，但 15–17 时与平日持平甚至更高，0–1 时也偏高。排班含义直接：节假日不必清早补车，要在 13 时前把车送到公园与江边站点，并延后晚间回收。18 个节假日中 5/1（1,118）、6/6（1,271）、10/3（1,265）接近旺季，12/24（84）、2/16（108）不足十分之一。</figcaption>
+    </div>
+  </figure>
+
+  <h3 class="sub"><em>深挖 B</em>降雨是剂量型</h3>
+  <p>干燥均值 739；0.01–4.99mm 掉到 178（−76%）；5–19.99mm 只剩 64（−91%）。≥20mm 仅 5 小时，样本不足，不解读。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 6｜降雨剂量反应：小雨即触发</span><span class="u">次／小时；柱下为样本小时数</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 200" role="img" aria-label="降雨剂量反应">
+          <g stroke="#EFE9DE">
+            <line x1="46" y1="108" x2="348" y2="108"/><line x1="46" y1="56" x2="348" y2="56"/>
+          </g>
+          <line x1="46" y1="160" x2="348" y2="160" stroke="#1B1917"/>
+          <g font-size="8.5" fill="#8E867B" text-anchor="end">
+            <text x="42" y="163">0</text><text x="42" y="111">250</text><text x="42" y="59">500</text>
+          </g>
+          <rect x="60" y="23.2" width="44" height="136.8" fill="#2A5B57"/>
+          <rect x="135.5" y="127.1" width="44" height="32.9" fill="#B0603C"/>
+          <rect x="211" y="148.2" width="44" height="11.8" fill="#B0603C"/>
+          <rect x="286.5" y="125.2" width="44" height="34.8" fill="#F1E1D6" stroke="#B0603C" stroke-width=".8" stroke-dasharray="2 2"/>
+          <g font-size="9.5" font-weight="700" text-anchor="middle">
+            <text x="82" y="18" fill="#2A5B57">739</text>
+            <text x="157.5" y="122" fill="#B0603C">178</text>
+            <text x="233" y="143" fill="#B0603C">64</text>
+            <text x="308.5" y="120" fill="#B0603C" font-size="8">n=5</text>
+          </g>
+          <g font-size="8" fill="#57514A" text-anchor="middle">
+            <text x="82" y="173">0 mm</text><text x="157.5" y="173">0.01–4.99</text>
+            <text x="233" y="173">5–19.99</text><text x="308.5" y="173">≥20</text>
+          </g>
+          <g font-size="7.5" fill="#8E867B" text-anchor="middle">
+            <text x="82" y="186">8,232</text><text x="157.5" y="186">457</text><text x="233" y="186">66</text><text x="308.5" y="186">5</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>不必等到大雨才调整。预报有降水，需求已掉到 1/4；5mm 以上掉到 1/11。这也解释了 7–8 月为何低于 6 月——梅雨雨量正集中在这一档。</figcaption>
+    </div>
+  </figure>
+
+  <h3 class="sub"><em>深挖 C</em>停运日历：整日停，集中在秋季</h3>
+  <p>停运小时按月：4 月 24、5 月 24、9 月 96、10 月 79、11 月 72；12 月至次年 3 月为 0，6–8 月为 0。每个小时都是 12–13 次，说明以“整日”为单位发生。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 7｜停运集中在 9–11 月与 4–5 月，冬季为零</span><span class="u">小时</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 180" role="img" aria-label="停运月度分布">
+          <g stroke="#EFE9DE">
+            <line x1="44" y1="100" x2="352" y2="100"/><line x1="44" y1="60" x2="352" y2="60"/><line x1="44" y1="20" x2="352" y2="20"/>
+          </g>
+          <line x1="44" y1="140" x2="352" y2="140" stroke="#1B1917"/>
+          <g font-size="8.5" fill="#8E867B" text-anchor="end">
+            <text x="40" y="143">0</text><text x="40" y="103">30</text><text x="40" y="63">60</text><text x="40" y="23">90</text>
+          </g>
+          <rect x="52" y="111.2" width="26" height="28.8" fill="#DCBBA6"/>
+          <rect x="95" y="111.2" width="26" height="28.8" fill="#DCBBA6"/>
+          <rect x="181" y="139.4" width="26" height=".6" fill="#E6DFD3"/>
+          <rect x="224" y="24.8" width="26" height="115.2" fill="#B0603C"/>
+          <rect x="267" y="45.2" width="26" height="94.8" fill="#B0603C"/>
+          <rect x="310" y="53.6" width="26" height="86.4" fill="#B0603C"/>
+          <g font-size="8.5" font-weight="700" text-anchor="middle">
+            <text x="65" y="106" fill="#57514A">24</text><text x="108" y="106" fill="#57514A">24</text>
+            <text x="237" y="19" fill="#B0603C">96</text><text x="280" y="40" fill="#B0603C">79</text><text x="323" y="48" fill="#B0603C">72</text>
+          </g>
+          <g font-size="7.5" fill="#8E867B" text-anchor="middle">
+            <text x="138" y="136">0</text><text x="194" y="136">0</text>
+          </g>
+          <g font-size="8.5" fill="#57514A" text-anchor="middle">
+            <text x="65" y="154">4 月</text><text x="108" y="154">5 月</text><text x="138" y="154">6–8</text>
+            <text x="194" y="154">12–3</text><text x="237" y="154">9 月</text><text x="280" y="154">10 月</text><text x="323" y="154">11 月</text>
+          </g>
+          <text x="44" y="172" font-size="7.5" fill="#8E867B">每小时停运 12–13 次，说明是整日停运而非零星中断</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>改写两个旧判断。第一，冬季低值不是停运造成的，是真实需求。第二，9 月 936 被 96 小时零值压低，估算应为 1,076，排到全年第二。节假日中 10/9 全天为 0 也属此类，剔除后节假日均值从 500 升到约 529。</figcaption>
+    </div>
+  </figure>
+
+  <h3 class="sub"><em>深挖 D</em>气温弹性：春季最强，夏季最弱</h3>
+  <p>按季切分后排序完全变了：春 +0.537、冬 +0.418、秋 +0.272、夏 +0.217。全年 +0.565 比任何单季都高——季节间差异被混进相关性，不能直接当“气温决定需求”的证据。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 8｜同一变量，四季四种弹性</span><span class="u">Spearman ρ（气温 × 租赁量）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 190" role="img" aria-label="四季气温相关">
+          <line x1="66" y1="16" x2="66" y2="146" stroke="#1B1917"/>
+          <line x1="310" y1="16" x2="310" y2="146" stroke="#B0603C" stroke-dasharray="3 3"/>
+          <text x="310" y="12" font-size="7.5" fill="#B0603C" text-anchor="middle">全年 0.565</text>
+          <g font-size="11.5" fill="#1B1917" text-anchor="end">
+            <text x="58" y="34">春季</text><text x="58" y="66">冬季</text><text x="58" y="98">秋季</text><text x="58" y="130">夏季</text>
+          </g>
+          <line x1="66" y1="30" x2="289.8" y2="30" stroke="#2A5B57" stroke-width="2.2"/>
+          <circle cx="289.8" cy="30" r="3.4" fill="#2A5B57"/>
+          <line x1="66" y1="62" x2="240.2" y2="62" stroke="#2A5B57" stroke-width="2.2"/>
+          <circle cx="240.2" cy="62" r="3.4" fill="#2A5B57"/>
+          <line x1="66" y1="94" x2="179.3" y2="94" stroke="#7FA8A3" stroke-width="2.2"/>
+          <circle cx="179.3" cy="94" r="3.4" fill="#7FA8A3"/>
+          <line x1="66" y1="126" x2="156.4" y2="126" stroke="#DCBBA6" stroke-width="2.2"/>
+          <circle cx="156.4" cy="126" r="3.4" fill="#DCBBA6"/>
+          <g font-size="8.5" font-weight="700">
+            <text x="296" y="34" fill="#2A5B57">+0.537</text>
+            <text x="246" y="66" fill="#2A5B57">+0.418</text>
+            <text x="185" y="98" fill="#2A5B57">+0.272</text>
+            <text x="162" y="130" fill="#B0603C">+0.217</text>
+          </g>
+          <text x="66" y="164" font-size="7.5" fill="#8E867B">春 2,208h · 夏 2,208h · 秋 2,184h · 冬 2,160h；全年值高于任何单季，属季节混合</text>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>+0.537</b>春季最强：回暖每一天都在解锁需求</div>
+        <div><b>+0.217</b>夏季最弱：可骑区间已饱和</div>
+        <div><b>0.565 &gt; 0.537</b>全年值被季节差异抬高</div>
+      </div>
+      <figcaption><b>读法：</b>春季弹性最高，“回暖”本身就是需求释放，3–5 月是投放与拉新窗口；夏季弹性最低，运营重点应换成降雨预报与夜间安全；秋季居中，对应“降温即收缩”的对称过程。</figcaption>
+    </div>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">04</span><h2>泽西市：一个月，两类人，一张星形网<small>19,676 行 × 15 字段 · 51 站 · 434 车</small></h2></div>
+  <p class="lede-p">时长按“秒”处理（中位 295 秒 ≈ 4.9 分钟），数据字典未随文件提供，复用前须核实。样本极端偏向会员：97.9% 的骑行来自订阅会员。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 9｜时长分布：两类用户几乎不重叠</span><span class="u">秒；虚线为 P25–P95，实心块为 P25–P75</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 180" role="img" aria-label="泽西市时长分位">
+          <line x1="60" y1="20" x2="60" y2="130" stroke="#E6DFD3"/>
+          <g stroke="#F0EAE0">
+            <line x1="114" y1="20" x2="114" y2="130"/><line x1="168" y1="20" x2="168" y2="130"/>
+            <line x1="222" y1="20" x2="222" y2="130"/><line x1="276" y1="20" x2="276" y2="130"/>
+            <line x1="330" y1="20" x2="330" y2="130"/>
+          </g>
+          <g font-size="8" fill="#8E867B" text-anchor="middle">
+            <text x="60" y="142">0</text><text x="114" y="142">1k</text><text x="168" y="142">2k</text>
+            <text x="222" y="142">3k</text><text x="276" y="142">4k</text><text x="330" y="142">5k 秒</text>
+          </g>
+          <text x="56" y="46" font-size="8.5" fill="#1B1917" text-anchor="end">会员</text>
+          <text x="56" y="57" font-size="7" fill="#8E867B" text-anchor="end">19,267</text>
+          <line x1="71.2" y1="48" x2="108.7" y2="48" stroke="#2A5B57" stroke-width=".9" stroke-dasharray="2 2"/>
+          <rect x="71.2" y="42" width="12.7" height="12" fill="#2A5B57"/>
+          <line x1="75.7" y1="39" x2="75.7" y2="57" stroke="#FAF8F4" stroke-width="2"/>
+          <text x="114" y="40" font-size="7.5" fill="#2A5B57">中位 291　P95 902</text>
+
+          <text x="56" y="96" font-size="8.5" fill="#1B1917" text-anchor="end">普通</text>
+          <text x="56" y="107" font-size="7" fill="#8E867B" text-anchor="end">409</text>
+          <line x1="82.1" y1="98" x2="301.8" y2="98" stroke="#B0603C" stroke-width=".9" stroke-dasharray="2 2"/>
+          <rect x="82.1" y="92" width="64.2" height="12" fill="#B0603C"/>
+          <line x1="101.4" y1="89" x2="101.4" y2="107" stroke="#FAF8F4" stroke-width="2"/>
+          <text x="306" y="101" font-size="7.5" fill="#B0603C">P95 4,477</text>
+          <text x="82.1" y="120" font-size="7.5" font-weight="700" fill="#B0603C">中位 767 秒，会员的 2.6 倍</text>
+          <text x="60" y="158" font-size="7" fill="#8E867B">均值 446.9 被长尾拉高 51.5%；IQR 上界 816.5，异常候选 1,407 条（7.15%）；最大值 187,392 秒（约 52 小时）</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>会员 P75（443 秒）仍低于普通用户中位（767 秒）。报表默认给中位数，另列 P95/P99，避免被 1.1% 的长尾拖走。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 10｜两条时钟：会员早晚通勤，普通用户午间出行</span><span class="u">占各自类型总量的百分比</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 230" role="img" aria-label="会员与普通用户小时占比">
+          <g stroke="#EFE9DE">
+            <line x1="44" y1="160.5" x2="348" y2="160.5"/><line x1="44" y1="107" x2="348" y2="107"/><line x1="44" y1="53.5" x2="348" y2="53.5"/>
+          </g>
+          <line x1="44" y1="214" x2="348" y2="214" stroke="#1B1917"/>
+          <g font-size="8" fill="#8E867B" text-anchor="end">
+            <text x="40" y="217">0</text><text x="40" y="163.5">3.5%</text><text x="40" y="110">7%</text><text x="40" y="56.5">10.5%</text>
+          </g>
+          <polyline fill="none" stroke="#2A5B57" stroke-width="1.9" stroke-linejoin="round"
+            points="44,165.1 57.2,166.8 70.4,168.1 83.6,169.0 96.8,167.6 110,157.6 123.2,132.0 136.4,85.2 149.6,26.0 162.8,107.0 176,132.2 189.2,132.7 202.4,131.0 215.6,125.0 228.8,136.5 242,129.1 255.2,112.9 268.4,64.9 281.6,43.6 294.8,85.2 308,117.3 321.2,141.8 334.4,151.8 347.6,160.4"/>
+          <polyline fill="none" stroke="#B0603C" stroke-width="1.9" stroke-linejoin="round"
+            points="44,164.6 57.2,162.5 70.4,167.9 83.6,164.6 96.8,164.6 110,167.9 123.2,148.6 136.4,141.1 149.6,97.2 162.8,146.4 176,115.4 189.2,97.2 202.4,54.3 215.6,46.8 228.8,52.2 242,86.5 255.2,99.3 268.4,91.8 281.6,120.7 294.8,141.1 308,148.6 321.2,125.0 334.4,148.6 347.6,157.1"/>
+          <circle cx="149.6" cy="26.0" r="2.8" fill="#2A5B57"/>
+          <text x="155" y="24" font-size="8" font-weight="700" fill="#2A5B57">会员 8 时 13.5%</text>
+          <circle cx="215.6" cy="46.8" r="2.8" fill="#B0603C"/>
+          <text x="221" y="44" font-size="8" font-weight="700" fill="#B0603C">普通 13 时 11.5%</text>
+          <circle cx="149.6" cy="97.2" r="2.6" fill="#B0603C"/>
+          <text x="145" y="110" font-size="7.5" font-weight="700" fill="#B0603C" text-anchor="end">普通 8 时 6.8%</text>
+          <g font-size="8" fill="#57514A" text-anchor="middle">
+            <text x="44" y="228">0</text><text x="149.6" y="228">9</text><text x="255.2" y="228">18</text><text x="347.6" y="228">23</text>
+          </g>
+          <g font-size="8" fill="#57514A">
+            <rect x="44" y="6" width="9" height="3" fill="#2A5B57"/><text x="57" y="10">会员</text>
+            <rect x="92" y="6" width="9" height="3" fill="#B0603C"/><text x="105" y="10">普通用户</text>
+          </g>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>33.3%</b>普通用户 12–14 时占比</div>
+        <div><b>11.0%</b>会员同一时段占比</div>
+        <div><b>2,620 / 2,292</b>全样本 8 时与 18 时次数</div>
+      </div>
+      <figcaption><b>读法：</b>叠加出来的“8 时尖峰”其实是会员的。普通用户样本 409 条，百分比容易被单条记录放大，所以只读形态、不读小数点。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 11｜站点集中度：前十站占 47.1%</span><span class="u">出发次数</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 240" role="img" aria-label="前十站出发量">
+          <g font-size="8" fill="#1B1917" text-anchor="end">
+            <text x="96" y="34">格罗夫街 PATH</text>
+            <text x="96" y="53">西普大道</text>
+            <text x="96" y="72">汉密尔顿公园</text>
+            <text x="96" y="91">交易广场</text>
+            <text x="96" y="110">纽波特 PATH</text>
+            <text x="96" y="129">港畔</text>
+            <text x="96" y="148">纽瓦克大道</text>
+            <text x="96" y="167">泽西大道×第三街</text>
+            <text x="96" y="186">马林轻轨站</text>
+            <text x="96" y="205">市政厅</text>
+          </g>
+          <rect x="100" y="26" width="248" height="11" fill="#B0603C"/>
+          <rect x="100" y="45" width="103.6" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="64" width="92.7" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="83" width="76.2" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="102" width="76.1" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="121" width="68.5" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="140" width="51.9" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="159" width="50.6" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="178" width="48.6" height="11" fill="#DCBBA6"/>
+          <rect x="100" y="197" width="46.9" height="11" fill="#DCBBA6"/>
+          <g font-size="7.5">
+            <text x="352" y="34" font-weight="700" fill="#B0603C" text-anchor="end">2,661　13.5%</text>
+            <text x="207" y="53" fill="#57514A">1,111　5.6%</text>
+            <text x="196" y="72" fill="#57514A">994　5.1%</text>
+            <text x="180" y="91" fill="#57514A">817　4.2%</text>
+            <text x="180" y="110" fill="#57514A">816　4.1%</text>
+            <text x="172" y="129" fill="#57514A">735　3.7%</text>
+            <text x="155" y="148" fill="#57514A">557　2.8%</text>
+            <text x="154" y="167" fill="#57514A">543　2.8%</text>
+            <text x="152" y="186" fill="#57514A">521　2.6%</text>
+            <text x="150" y="205" fill="#57514A">503　2.6%</text>
+          </g>
+          <text x="100" y="226" font-size="7" fill="#8E867B">站名为缩写；到达 2,986 次（15.2%），净流入 +325</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>格罗夫街 PATH 出发 13.5%、到达 15.2%，净流入 325。前十有 3 个轨交节点，指向的是“PATH 接驳”这一件事。</figcaption>
+    </div>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">05</span><h2>泽西市深挖：真实坐标下的星形网<small>14 个站点 · 11,279 次出发 · 占全月 57.3%</small></h2></div>
+  <p class="lede-p">把前 7 站与第二梯队 7 站的去向都拉出来之后，结论很集中：不是随机扩散，而是“居住区 → 格罗夫街 PATH”的单向漏斗，叠加两组本地钟摆。下图用站点<strong>真实经纬度</strong>绘制。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 12｜地理分布与主要流向</span><span class="u">真实经纬度；北在上，两轴比例已按纬度余弦对齐</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 400" role="img" aria-label="泽西市站点地理分布与流向">
+          <rect x="14" y="12" width="332" height="332" fill="#F7F2E8"/>
+          <rect x="336" y="12" width="10" height="332" fill="#E3EBE9"/>
+          <text x="344" y="178" font-size="7" fill="#7E9C98" text-anchor="middle" transform="rotate(90 344 178)">哈德逊河</text>
+          <g stroke="#EFE7D6">
+            <line x1="14" y1="95" x2="346" y2="95"/><line x1="14" y1="178" x2="346" y2="178"/><line x1="14" y1="261" x2="346" y2="261"/>
+          </g>
+          <g stroke="#EEE6D5" stroke-dasharray="1 4">
+            <line x1="97" y1="12" x2="97" y2="344"/><line x1="180" y1="12" x2="180" y2="344"/><line x1="263" y1="12" x2="263" y2="344"/>
+          </g>
+
+          <g stroke="#B0603C" stroke-linecap="round" opacity=".42">
+            <line x1="226" y1="220" x2="271" y2="255" stroke-width="4.2"/>
+            <line x1="228" y1="205" x2="271" y2="254" stroke-width="3.9"/>
+            <line x1="276" y1="301" x2="274" y2="264" stroke-width="3.4"/>
+            <line x1="256" y1="227" x2="271" y2="255" stroke-width="2.4"/>
+            <line x1="254" y1="242" x2="270" y2="256" stroke-width="2"/>
+            <line x1="269" y1="274" x2="273" y2="262" stroke-width="2"/>
+          </g>
+          <g stroke="#2A5B57" stroke-linecap="round" opacity=".4">
+            <line x1="272" y1="255" x2="267" y2="194" stroke-width="4.4"/>
+            <line x1="277" y1="257" x2="272" y2="196" stroke-width="2" stroke-dasharray="4 3"/>
+            <line x1="328" y1="259" x2="331" y2="197" stroke-width="2.6"/>
+            <line x1="333" y1="260" x2="336" y2="198" stroke-width="2.6"/>
+          </g>
+          <line x1="256" y1="227" x2="265" y2="194" stroke="#B0603C" stroke-width="2.2" opacity=".4" stroke-linecap="round"/>
+
+          <g fill="#FAF8F4" stroke="#CBC0A9" stroke-width="1.2">
+            <circle cx="151" cy="140" r="5.6"/><circle cx="258" cy="211" r="5.4"/><circle cx="344" cy="182" r="5.4"/>
+            <circle cx="245" cy="268" r="5.2"/><circle cx="303" cy="319" r="5.2"/><circle cx="275" cy="241" r="5.2"/>
+            <circle cx="230" cy="241" r="5.2"/><circle cx="335" cy="304" r="5"/><circle cx="316" cy="316" r="5"/>
+            <circle cx="323" cy="219" r="5"/><circle cx="118" cy="210" r="4.6"/><circle cx="214" cy="107" r="4.6"/>
+            <circle cx="219" cy="65" r="4.6"/><circle cx="232" cy="284" r="4.4"/><circle cx="194" cy="329" r="4.4"/>
+            <circle cx="309" cy="296" r="4.4"/><circle cx="95" cy="261" r="4"/><circle cx="224" cy="260" r="4"/>
+            <circle cx="140" cy="224" r="3.8"/><circle cx="90" cy="207" r="3.8"/><circle cx="287" cy="285" r="3.6"/>
+            <circle cx="94" cy="237" r="3.4"/><circle cx="182" cy="161" r="3.4"/><circle cx="184" cy="38" r="3.2"/>
+            <circle cx="227" cy="131" r="3.2"/><circle cx="49" cy="216" r="3"/><circle cx="291" cy="14" r="3"/>
+            <circle cx="96" cy="192" r="2.8"/><circle cx="170" cy="130" r="2.8"/><circle cx="148" cy="310" r="2.8"/>
+            <circle cx="268" cy="51" r="2.4"/><circle cx="124" cy="303" r="2.4"/><circle cx="122" cy="106" r="2.2"/>
+            <circle cx="16" cy="270" r="2.2"/><circle cx="46" cy="330" r="2"/><circle cx="238" cy="207" r="5.4"/>
+            <circle cx="112" cy="342" r="1.6"/>
+          </g>
+          <circle cx="142" cy="165" r="8.6" fill="#7FA8A3" stroke="#2A5B57" stroke-width="1.4"/>
+          <circle cx="267" cy="191" r="7.4" fill="#7FA8A3" stroke="#2A5B57" stroke-width="1.4"/>
+          <circle cx="334" cy="194" r="7" fill="#DCBBA6" stroke="#B0603C" stroke-width="1.4"/>
+          <circle cx="331" cy="261" r="6.8" fill="#DCBBA6" stroke="#B0603C" stroke-width="1.4"/>
+          <circle cx="336" cy="287" r="6.6" fill="#DCBBA6" stroke="#B0603C" stroke-width="1.4"/>
+          <circle cx="274" cy="259" r="14" fill="#B0603C"/>
+          <circle cx="274" cy="259" r="19" fill="none" stroke="#B0603C" opacity=".35"/>
+          <circle cx="274" cy="259" r="24" fill="none" stroke="#B0603C" opacity=".16"/>
+          <text x="274" y="262" font-size="7" fill="#FAF8F4" text-anchor="middle" font-weight="700" font-family="system-ui,sans-serif">PATH</text>
+
+          <g font-size="7.5" fill="#1B1917" font-family="system-ui,sans-serif">
+            <line x1="272" y1="245" x2="252" y2="234" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="250" y="232" text-anchor="end" font-weight="700">格罗夫街 PATH</text>
+            <text x="250" y="241" text-anchor="end" font-size="6.5" fill="#57514A">2,661 出发 / 2,986 到达</text>
+
+            <line x1="262" y1="188" x2="244" y2="178" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="242" y="176" text-anchor="end" font-weight="700">汉密尔顿公园</text>
+            <text x="242" y="185" text-anchor="end" font-size="6.5" fill="#57514A">↔ 格罗夫街 377/395</text>
+
+            <line x1="136" y1="162" x2="120" y2="154" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="118" y="152" text-anchor="end" font-weight="700">西普大道</text>
+            <text x="118" y="161" text-anchor="end" font-size="6.5" fill="#57514A">1,111 出发</text>
+
+            <line x1="331" y1="189" x2="318" y2="178" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="318" y="172" text-anchor="middle" font-weight="700">纽波特 PATH</text>
+            <text x="318" y="181" text-anchor="middle" font-size="6.5" fill="#57514A">↔ 港畔 171/171</text>
+
+            <line x1="326" y1="265" x2="312" y2="272" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="310" y="278" text-anchor="end" font-weight="700">港畔</text>
+
+            <line x1="340" y1="291" x2="330" y2="303" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="330" y="313" text-anchor="end" font-weight="700">交易广场</text>
+
+            <line x1="222" y1="216" x2="206" y2="208" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="204" y="206" text-anchor="end" font-weight="700">不伦瑞克街</text>
+            <text x="204" y="215" text-anchor="end" font-size="6.5" fill="#57514A">60.1% → 靶心</text>
+
+            <line x1="278" y1="306" x2="292" y2="316" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="294" y="322" font-weight="700">马林轻轨站</text>
+
+            <line x1="146" y1="136" x2="132" y2="126" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="130" y="124" text-anchor="end" font-weight="700">期刊广场</text>
+
+            <line x1="222" y1="61" x2="234" y2="52" stroke="#C9BFA8" stroke-width=".7"/>
+            <text x="236" y="50" font-weight="700">潘兴运动场</text>
+          </g>
+          <g stroke="#57514A" stroke-width="1">
+            <line x1="20" y1="358" x2="57" y2="358"/>
+            <line x1="20" y1="354" x2="20" y2="362"/><line x1="57" y1="354" x2="57" y2="362"/>
+          </g>
+          <text x="62" y="361" font-size="7" fill="#57514A">500 m</text>
+          <text x="20" y="376" font-size="6.8" fill="#8E867B">节点面积 ∝ 出发量；陶土线＝居住区汇入靶心；墨绿双线＝本地钟摆</text>
+          <text x="20" y="390" font-size="6.8" fill="#8E867B">经纬度为各站组均值；14 个重点站标注，其余 36 站只画点</text>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>60.1%</b>不伦瑞克街出发量的终点是格罗夫街</div>
+        <div><b>+325</b>格罗夫街月净流入，车辆只进不出</div>
+        <div><b>1.5%</b>前 12 站同站还车率</div>
+      </div>
+      <figcaption><b>读法：</b>坐标摊开才看清“星形”的形状：北侧居住带（不伦瑞克街、第六街、马林轻轨站）沿三条主路汇入格罗夫街；东部滨水另有一组短距钟摆（港畔↔纽波特）；南部（自由轻轨站、杰克逊广场一带）几乎不参与主网。这也解释了为什么全网同站还车只有 1.5%——所有箭头都指向同一个点。</figcaption>
+    </div>
+  </figure>
+
+  <div class="quote j">不伦瑞克街出发 461 次，其中 277 次（60.1%）直接骑到格罗夫街 PATH。<span>同站借还只有 1.5%——几乎全是位移需求，没有绕圈游览。</span></div>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 13｜各站点把多少比例的出发量送给格罗夫街</span><span class="u">占该站出发量 %</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 220" role="img" aria-label="格罗夫街引力">
+          <line x1="112" y1="16" x2="112" y2="184" stroke="#E6DFD3"/>
+          <g stroke="#F2EDE3">
+            <line x1="188" y1="16" x2="188" y2="184"/><line x1="264" y1="16" x2="264" y2="184"/><line x1="340" y1="16" x2="340" y2="184"/>
+          </g>
+          <g font-size="8" fill="#8E867B" text-anchor="middle">
+            <text x="112" y="196">0</text><text x="188" y="196">20%</text><text x="264" y="196">40%</text><text x="340" y="196">60%</text>
+          </g>
+          <g font-size="8" fill="#1B1917" text-anchor="end">
+            <text x="106" y="34">不伦瑞克街</text>
+            <text x="106" y="56">不伦瑞克×第六街</text>
+            <text x="106" y="78">马林轻轨站</text>
+            <text x="106" y="100">泽西大道×第三街</text>
+            <text x="106" y="122">市政厅</text>
+            <text x="106" y="144">纽瓦克大道</text>
+            <text x="106" y="166">哥伦布大道</text>
+          </g>
+          <rect x="112" y="24" width="228.4" height="12" fill="#B0603C"/>
+          <rect x="112" y="46" width="192.3" height="12" fill="#B0603C"/>
+          <rect x="112" y="68" width="138.7" height="12" fill="#B0603C"/>
+          <rect x="112" y="90" width="70.7" height="12" fill="#DCBBA6"/>
+          <rect x="112" y="112" width="52.1" height="12" fill="#DCBBA6"/>
+          <rect x="112" y="134" width="47.9" height="12" fill="#DCBBA6"/>
+          <rect x="112" y="156" width="10.3" height="12" fill="#DCBBA6"/>
+          <g font-size="7.5" font-weight="700">
+            <text x="346" y="34" fill="#B0603C" text-anchor="end">60.1%</text>
+            <text x="310" y="56" fill="#B0603C" text-anchor="end">50.6%</text>
+            <text x="256" y="78" fill="#B0603C" text-anchor="end">36.5%</text>
+            <text x="188" y="100" fill="#57514A" text-anchor="end">18.6%</text>
+            <text x="170" y="122" fill="#57514A" text-anchor="end">13.7%</text>
+            <text x="166" y="144" fill="#57514A" text-anchor="end">12.6%</text>
+            <text x="128" y="166" fill="#57514A">2.7%</text>
+          </g>
+          <text x="112" y="212" font-size="7" fill="#8E867B">分母为各站自身出发量；深色为北侧居住区，浅色为南部与市中心站点</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>越靠近 PATH、越偏居住区，指向格罗夫街的比例越高；哥伦布大道是反例——仅 2.7% 去格罗夫街，去向分散在纽波特（56）、埃塞克斯轻轨站（39）、纽波特公园大道（36），南部是另一个独立子网。</figcaption>
+    </div>
+  </figure>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 14｜二梯队站的主要流向</span><span class="u">次数；7 站共 3,512 次出发、46 个终点</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 250" role="img" aria-label="二梯队流向">
+          <line x1="128" y1="14" x2="128" y2="214" stroke="#E6DFD3"/>
+          <g font-size="7.5" fill="#1B1917">
+            <text x="132" y="28">不伦瑞克街 → 格罗夫街</text>
+            <text x="132" y="49">不伦瑞克×第六街 → 格罗夫街</text>
+            <text x="132" y="70">马林轻轨站 → 格罗夫街</text>
+            <text x="132" y="91">泽西大道×第三街 → 汉密尔顿</text>
+            <text x="132" y="112">泽西大道×第三街 → 格罗夫街</text>
+            <text x="132" y="133">纽瓦克大道 → 汉密尔顿公园</text>
+            <text x="132" y="154">纽瓦克大道 → 格罗夫街</text>
+            <text x="132" y="175">市政厅 → 格罗夫街</text>
+            <text x="132" y="196">市政厅 → 范沃斯特公园</text>
+          </g>
+          <rect x="128" y="19" width="212" height="10" fill="#B0603C"/>
+          <rect x="128" y="40" width="188" height="10" fill="#B0603C"/>
+          <rect x="128" y="61" width="145" height="10" fill="#B0603C"/>
+          <rect x="128" y="82" width="83" height="10" fill="#DCBBA6"/>
+          <rect x="128" y="103" width="77" height="10" fill="#B0603C"/>
+          <rect x="128" y="124" width="59" height="10" fill="#DCBBA6"/>
+          <rect x="128" y="145" width="54" height="10" fill="#B0603C"/>
+          <rect x="128" y="166" width="53" height="10" fill="#B0603C"/>
+          <rect x="128" y="187" width="40" height="10" fill="#DCBBA6"/>
+          <g font-size="7.5" font-weight="700" text-anchor="end">
+            <text x="350" y="28" fill="#B0603C">277</text>
+            <text x="326" y="49" fill="#B0603C">246</text>
+            <text x="283" y="70" fill="#B0603C">190</text>
+            <text x="221" y="91" fill="#57514A">108</text>
+            <text x="215" y="112" fill="#B0603C">101</text>
+            <text x="197" y="133" fill="#57514A">77</text>
+            <text x="192" y="154" fill="#B0603C">70</text>
+            <text x="191" y="175" fill="#B0603C">69</text>
+            <text x="178" y="196" fill="#57514A">52</text>
+          </g>
+          <text x="128" y="228" font-size="7" fill="#8E867B">深色＝终点为格罗夫街 PATH　浅色＝本地钟摆与社区短驳</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>前三条全是“→ 格罗夫街”，方向单一；第四条起出现本地钟摆（泽西大道×第三街 → 汉密尔顿公园 108）。同一张网里“接驳 PATH”与“社区短驳”并存，调度策略不应一刀切。</figcaption>
+    </div>
+  </figure>
+
+  <h3 class="sub j"><em>深挖 E</em>时长由场景决定，不由人群决定</h3>
+  <p>抽查 12 个站点（4,071 次，占 20.7%）的中位时长：交通与商业节点 254–307 秒；公园、医院、图书馆 448–475 秒。相差 1.9 倍，大于性别（8%）与年龄（13%）。</p>
+
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 15｜同一系统，两种骑法</span><span class="u">中位骑行时长（秒）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 250" role="img" aria-label="站点中位时长">
+          <g stroke="#EFE9DE">
+            <line x1="112" y1="18" x2="112" y2="212"/><line x1="158" y1="18" x2="158" y2="212"/>
+            <line x1="204" y1="18" x2="204" y2="212"/><line x1="250" y1="18" x2="250" y2="212"/>
+            <line x1="296" y1="18" x2="296" y2="212"/><line x1="342" y1="18" x2="342" y2="212"/>
+          </g>
+          <line x1="66" y1="18" x2="66" y2="212" stroke="#1B1917"/>
+          <g font-size="7.5" fill="#8E867B" text-anchor="middle">
+            <text x="66" y="224">0</text><text x="112" y="224">100</text><text x="158" y="224">200</text>
+            <text x="204" y="224">300</text><text x="250" y="224">400</text><text x="296" y="224">500 秒</text>
+          </g>
+          <g font-size="7.5" fill="#1B1917" text-anchor="end">
+            <text x="60" y="32">不伦瑞克街</text><text x="60" y="48">交易广场</text><text x="60" y="64">哥伦布大道</text>
+            <text x="60" y="80">埃塞克斯轻轨站</text><text x="60" y="96">不伦瑞克×第六街</text><text x="60" y="112">华盛顿街</text>
+            <text x="60" y="128">保卢斯胡克</text><text x="60" y="144">卑尔根大道</text><text x="60" y="160">奥克兰大道</text>
+            <text x="60" y="176">五角图书馆</text><text x="60" y="192">戈登公园</text><text x="60" y="208">基督医院</text>
+          </g>
+          <g stroke="#2A5B57" stroke-width=".7" opacity=".3">
+            <line x1="66" y1="28" x2="183" y2="28"/><line x1="66" y1="44" x2="195" y2="44"/><line x1="66" y1="60" x2="196" y2="60"/>
+            <line x1="66" y1="76" x2="199" y2="76"/><line x1="66" y1="92" x2="202" y2="92"/><line x1="66" y1="108" x2="207" y2="108"/>
+          </g>
+          <g stroke="#7FA8A3" stroke-width=".7" opacity=".45">
+            <line x1="66" y1="124" x2="228" y2="124"/><line x1="66" y1="140" x2="235" y2="140"/><line x1="66" y1="156" x2="237" y2="156"/>
+          </g>
+          <g stroke="#B0603C" stroke-width=".7" opacity=".45">
+            <line x1="66" y1="172" x2="272" y2="172"/><line x1="66" y1="188" x2="282" y2="188"/><line x1="66" y1="204" x2="285" y2="204"/>
+          </g>
+          <g fill="#2A5B57">
+            <circle cx="183" cy="28" r="3.2"/><circle cx="195" cy="44" r="3.2"/><circle cx="196" cy="60" r="3.2"/>
+            <circle cx="199" cy="76" r="3.2"/><circle cx="202" cy="92" r="3.2"/><circle cx="207" cy="108" r="3.2"/>
+          </g>
+          <g fill="#7FA8A3">
+            <circle cx="228" cy="124" r="3.2"/><circle cx="235" cy="140" r="3.2"/><circle cx="237" cy="156" r="3.2"/>
+          </g>
+          <g fill="#B0603C">
+            <circle cx="272" cy="172" r="3.2"/><circle cx="282" cy="188" r="3.2"/><circle cx="285" cy="204" r="3.2"/>
+          </g>
+          <g font-size="7" fill="#57514A">
+            <text x="189" y="31">254</text><text x="201" y="47">280</text><text x="202" y="63">282</text>
+            <text x="205" y="79">288</text><text x="208" y="95">296</text><text x="213" y="111">307</text>
+            <text x="234" y="127">353</text><text x="241" y="143">368</text><text x="243" y="159">373</text>
+            <text x="278" y="175">448</text><text x="288" y="191">469</text><text x="291" y="207">475</text>
+          </g>
+          <text x="66" y="240" font-size="7" fill="#8E867B">墨绿＝交通/商业节点　中绿＝居住区　陶土＝公园/医院/图书馆（前 12 站按字母序，合计 4,071 次）</text>
+        </svg>
+      </div>
+      <figcaption><b>读法：</b>“去哪”比“谁在骑”更能解释时长。运营含义：免费额度可以按站点类型分档，公园类站点给更宽的 45 分钟窗口不会明显鼓励滥用。</figcaption>
+    </div>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">06</span><h2>两城叠加：形状对照<small>各除以自身小时均值，只比形状</small></h2></div>
+  <figure>
+    <div class="figbox">
+      <div class="fighead"><span class="t">图 16｜尖峰位置相同，尖锐程度不同</span><span class="u">相对强度（自身时均 = 1.0）</span></div>
+      <div class="chart">
+        <svg viewBox="0 0 360 230" role="img" aria-label="两城相对强度">
+          <g stroke="#E6DFD3" stroke-dasharray="3 3">
+            <line x1="44" y1="158" x2="348" y2="158"/><line x1="44" y1="107" x2="348" y2="107"/><line x1="44" y1="56" x2="348" y2="56"/>
+          </g>
+          <line x1="44" y1="209" x2="348" y2="209" stroke="#1B1917"/>
+          <g font-size="8" fill="#8E867B" text-anchor="end">
+            <text x="40" y="212">0</text><text x="40" y="161">1×</text><text x="40" y="110">2×</text><text x="40" y="59">3×</text>
+          </g>
+          <polyline fill="none" stroke="#2A5B57" stroke-width="1.9" stroke-linejoin="round"
+            points="44,175.6 57.2,181.3 70.4,187.4 83.6,192.2 96.8,195.7 110,195.4 123.2,188.1 136.4,172.5 149.6,150.5 162.8,168.6 176,174.4 189.2,170.8 202.4,166.0 215.6,164.3 228.8,163.1 242,159.7 255.2,154.7 268.4,144.6 281.6,126.7 294.8,141.8 308,148.0 321.2,149.8 334.4,155.1 347.6,167.7"/>
+          <polyline fill="none" stroke="#B0603C" stroke-width="1.9" stroke-linejoin="round"
+            points="44,198.3 57.2,199.6 70.4,200.6 83.6,201.3 96.8,200.2 110,192.8 123.2,173.4 136.4,138.1 149.6,92.6 162.8,154.5 176,172.9 189.2,173.0 202.4,171.0 215.6,166.4 228.8,175.2 242,170.0 255.2,158.1 268.4,122.6 281.6,106.8 294.8,138.1 308,162.4 321.2,180.4 334.4,188.3 347.6,194.9"/>
+          <circle cx="149.6" cy="92.6" r="2.8" fill="#B0603C"/>
+          <text x="155" y="90" font-size="8" font-weight="700" fill="#B0603C">泽西 8 时 3.20×</text>
+          <circle cx="281.6" cy="126.7" r="2.8" fill="#2A5B57"/>
+          <text x="277" y="122" font-size="8" font-weight="700" fill="#2A5B57" text-anchor="end">首尔 18 时 2.13×</text>
+          <g font-size="8" fill="#57514A" text-anchor="middle">
+            <text x="44" y="222">0</text><text x="149.6" y="222">9</text><text x="255.2" y="222">18</text><text x="347.6" y="222">23</text>
+          </g>
+        </svg>
+      </div>
+      <div class="readout">
+        <div><b>3.20× / 2.13×</b>泽西早峰 vs 首尔晚峰</div>
+        <div><b>1.39×</b>泽西 9 时已回到均值附近</div>
+        <div><b>0.19×</b>泽西 3 时几乎空转</div>
+      </div>
+      <figcaption><b>读法：</b>两城都在 8 时与 18 时出峰；差别在形状——泽西是单点冲刺（拼桩位容量），首尔是宽峰平台（拼车辆调度）。这条差异比“谁骑得多”更有运营价值。</figcaption>
+    </div>
+  </figure>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">07</span><h2>七件可执行的事<small>每条绑定数字、步骤、成本量级与验证指标</small></h2></div>
+
+  <div class="rec">
+    <div class="side"><span class="p p0">P0</span><br>首尔 · 2 周</div>
+    <div>
+      <h3>把再平衡窗口前移到 17 时前</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>18 时 1,503、19 时 1,195、20 时 1,069；17–20 时约占全天 24%；4–5 时仅 133–139。</dd>
+        <dt>步骤</dt><dd><ol><li>按站点算 17–20 时净流出，锁定前 20 个失衡站。</li><li>17 时前预置、20 时后回收；维保排 3–6 时。</li><li>上线 15 分钟粒度满/空桩看板。</li></ol></dd>
+        <dt>成本</dt><dd>2 班调度车 + 2 名司机 + 看板 2 人周；月度增量按当地核价（量级：数万元）。</dd>
+        <dt>验证</dt><dd>高峰缺车率（−30%）、18–20 时骑行量、平均空桩时长。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p0">P0</span><br>泽西市 · 2–3 周</div>
+    <div>
+      <h3>给超长骑行装三道护栏</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>P99=2,254 秒、最大 187,392 秒；异常候选 1,407 条（7.15%）；均值被拉高 51.5%。</dd>
+        <dt>步骤</dt><dd><ol><li>40 分钟推送、60 分钟计费提示、2 小时人工外呼。</li><li>超 12 小时未归还自动建单并标“疑似遗失”。</li><li>时长 &gt; P99 的记录单列复盘，不进常规均值。</li></ol></dd>
+        <dt>成本</dt><dd>产品与消息通道改造 3–4 人周；边际成本低。</dd>
+        <dt>验证</dt><dd>&gt;45 分钟占比、&gt;12 小时未归还件数（−50%）、车辆日均周转。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p1">P1</span><br>首尔 · 1 个月</div>
+    <div>
+      <h3>把秋季整日停运改成 3–6 时窗口停</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>停运 295 小时全为整日停，集中在 9 月 96h、10 月 79h、11 月 72h、4–5 月各 24h；而 3–6 时需求仅 50–140 次/小时。</dd>
+        <dt>步骤</dt><dd><ol><li>年度检修、系统升级改为凌晨分批窗口，单次影响站点 ≤20%。</li><li>按站点分组轮换，停运前 48 小时 App 提示替代站点。</li><li>每月核对停运损失小时数。</li></ol></dd>
+        <dt>成本</dt><dd>检修排程改造 + 夜间值守津贴；无新增资本支出。</dd>
+        <dt>验证</dt><dd>停运损失小时（−70%）、9–11 月骑行量、停运相关投诉。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p1">P1</span><br>首尔 · 2–3 周</div>
+    <div>
+      <h3>“预报有雨”即触发缩量</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>干燥 739；0.01–4.99mm 178（−76%）；5–19.99mm 64（−91%）。小雨已砍掉四分之三。</dd>
+        <dt>步骤</dt><dd><ol><li>触发条件改为“降水概率 &gt; 60% 或预计降水量 &gt; 0”。</li><li>分两档缩量：小雨 −40%、中雨以上 −70%。</li><li>雨停后 2 小时补车一次。</li></ol></dd>
+        <dt>成本</dt><dd>气象 API + 排班规则改造约 1 人月。</dd>
+        <dt>验证</dt><dd>雨日无效调度里程、雨停后 3 小时恢复比例、维保完成率。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p1">P1</span><br>首尔 · 1 季度</div>
+    <div>
+      <h3>把 3–5 月做成投放与拉新主窗口</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>春季气温弹性最高（ρ=+0.537），3 月均值 512 到 6 月 1,246，是全年最陡的爬升；夏季弹性仅 +0.217。</dd>
+        <dt>步骤</dt><dd><ol><li>3 月初完成车辆检修与站点扩容，赶在爬升前到位。</li><li>4–5 月做新会员招募与首月折扣，承接回暖需求。</li><li>6 月前完成雨季预案，避免峰值被雨打断。</li></ol></dd>
+        <dt>成本</dt><dd>营销预算按季度总盘平移，不额外追加；检修前置仅调排期。</dd>
+        <dt>验证</dt><dd>3–5 月新增会员数、同期骑行量同比、6–8 月留存率。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p1">P1</span><br>泽西市 · 1–2 个月</div>
+    <div>
+      <h3>给格罗夫街 PATH 做车辆回流激励</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>到达 2,986、出发 2,661，净流入 +325；二梯队站 27.5% 终点在此；同站还车率仅 1.5%，车辆只进不出。</dd>
+        <dt>步骤</dt><dd><ol><li>对“从格罗夫街出发”的骑行给积分或延长免费时长（错峰 10–16 时）。</li><li>高峰后对满桩站点触发“反向骑行”折扣推送。</li><li>与 PATH 通勤时段对齐，做站内引导屏。</li></ol></dd>
+        <dt>成本</dt><dd>激励预算按每单 0.2–0.5 美元测算 + 产品配置 2 人月。</dd>
+        <dt>验证</dt><dd>格罗夫街净流入（目标 &lt;+150/月）、满桩告警次数、反向骑行占比。</dd>
+      </dl></div>
+    </div>
+  </div>
+
+  <div class="rec">
+    <div class="side"><span class="p p2">P2</span><br>泽西市 · 1 季度</div>
+    <div>
+      <h3>为午间休闲用户做一款产品</h3>
+      <div class="body"><dl>
+        <dt>依据</dt><dd>普通用户 12–14 时占自身 33.3%（会员 11.0%）；普通用户中位 767 秒、P95 4,477 秒；公园类站点中位 448–475 秒。</dd>
+        <dt>步骤</dt><dd><ol><li>12–16 时推 2 小时时长券，定价对齐一次 45 分钟超时费。</li><li>公园、图书馆、医院类站点标“休闲还车点”。</li><li>4 周 A/B 测，需外部接入天气数据做控制。</li></ol></dd>
+        <dt>成本</dt><dd>票务配置 + 营销约 2 人月；标识为低值物料。</dd>
+        <dt>验证</dt><dd>普通用户占比（2.1%→3%）、午间骑行量、券核销率、客单价。</dd>
+      </dl></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="head"><span class="no">08</span><h2>边界与自评<small>口径、估算与作图规范</small></h2></div>
+  <div class="note warn">
+    <b>三处已修正：</b>①“首尔是温度城市”改为“春季最敏感（+0.537）、夏季最钝（+0.217）”；②停运不在冬季，集中在 4–5 月与 9–11 月，且为整日停；③“节假日统一偏低”改为“相位后移”，8 时 −67% 而下午反超。
+  </div>
+  <div class="note">
+    <b>作图规范（逐条自检）：</b>①每张图在 340px 宽手机上按 1:1 渲染，正文标注 ≥7.5 单位、刻度 ≥7 单位，不依赖横向滚动；②桌面端最大宽度 540px，放大倍率 ≤1.5；③图内标注手工避让，不压线、不互相遮挡；④单位与样本量写进图内；⑤同量纲才共轴（四季共用 0–2,200，两城叠加用相对强度），不同量纲绝不叠画。
+  </div>
+  <div class="note">
+    <b>两类值要分清：</b>9 月 1,076、节假日剔除停运后 529 是按同分布假设的<strong>估算</strong>；其余（均值、分位、相关系数、计数、经纬度）均为完整数据上的实测。
+  </div>
+  <div class="note">
+    <b>地图口径：</b>图 12 以各站“起点站纬度／经度”的组均值作坐标，横向按经度、纵向按纬度线性映射，两轴比例由 cos 40.72°≈0.758 自然对齐；不是投影地图，无底图与行政边界，位置误差在数十米量级。图中仅标注 10 个重点站，其余站只画点，避免标签堆叠。
+  </div>
+  <div class="note">
+    <b>不能说的五句话：</b>①“每升温 1℃ 多 29 次”——R²=0.29 的样本内斜率；②“泽西市全年日均 635 次”——只有冬季单月；③“女性/年轻人骑得更久”——8%、13% 的差距远小于场景的 90%；④“格罗夫街是唯一枢纽”——只核了 14 个站，南部走廊已显独立；⑤“车队轮转健康”——无桩位与维修数据。
+  </div>
+  <p><strong>自评。</strong>外观：全篇只保留数据图与一张坐标地图，没有插画；16 张图统一按 360 画布设计，手机 1:1、桌面最大 540px，无横向滚动，标注逐一避让。分析：首尔五层交叉（季节×小时、假日×小时、雨量×剂量、停运×日历、四季×弹性），泽西四层（用户×小时、站点×时长、站点×去向、自环率）。可行性：七条建议全部绑定数字与验证指标，P0 两条三周内可启动。</p>
+  <p><strong>仍缺：</strong>泽西市 51 站的完整 OD 矩阵（本轮覆盖 14 站、57.3% 出发量）；泽西无全年与天气数据，1/24 这类低谷无法归因；首尔无站点维度，做不了空间再平衡；两城定价与会员政策差异未量化。</p>
+</section>
+
+<footer class="wrap">
+  <h4>数据来源</h4>
+  <p>首尔公共自行车租赁与天气逐小时数据（8,760 行 × 14 字段，2017-12-01 至 2018-11-30）；泽西市 Citi Bike 2019 年 1 月骑行记录（19,676 行 × 15 字段）。全部统计由分析工具在完整数据上计算，未删除、未插补、未合并；估算值均标注假设。</p>
+  <h4>外部资料（检索摘要，建议复核原文）</h4>
+  <ul>
+    <li>Bike Jersey City 官方新闻稿，2021-04-29：站点超 50 个、24/7 运营、年卡 169 美元、45 分钟内不限次 —— <a href="https://www.jerseycitynj.gov/" target="_blank" rel="noopener">jerseycitynj.gov</a></li>
+    <li>Korea JoongAng Daily，2018-03：会员约 62 万、38% 骑行发生在工作日通勤高峰 —— <a href="https://www.koreajoongangdaily.joins.com/" target="_blank" rel="noopener">koreajoongangdaily.joins.com</a></li>
+    <li>The Korea Herald，2019-06：首尔公共自行车在共享出行中份额约 24% —— <a href="https://www.koreaherald.com/" target="_blank" rel="noopener">koreaherald.com</a></li>
+  </ul>
+  <h4>图像说明</h4>
+  <p>全篇 16 张内联 SVG 图：15 张数据图 + 1 张经纬度站点图。已删除全部场景插画（含骑行者图形），无外链图片请求，离线与弱网下均不会破图；所有图表按 360 宽画布设计，手机 1:1 显示、桌面最大 540px，不需要横向滚动。</p>
+  <p style="color:#8E867B">报告生成日期：本次会话当日。</p>
+</footer>
+
+</body>
+</html>
